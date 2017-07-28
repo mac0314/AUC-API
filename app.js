@@ -58,7 +58,8 @@ app.use( morgan('dev', {stream: accessLogStream}));
 var mysql = require('mysql');
 
 // routes module
-var index = require('./routes/auc/index');
+var index = require('./routes/index');
+var ingredient = require('./routes/api/ingredient');
 
 
 
@@ -78,7 +79,7 @@ app.use(express.static(path.join(__dirname, 'node_modules/sweetalert/dist')));
 
 // Web page route
 app.use('/', index);
-
+app.use('/ingredient', ingredient);
 
 
 // client = redis.createClient(config.redis.port, config.redis.host);
