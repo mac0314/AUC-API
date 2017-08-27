@@ -59,8 +59,12 @@ var mysql = require('mysql');
 
 // routes module
 var index = require('./routes/index');
-var ingredient = require('./routes/api/ingredient');
 
+var userAPI = require('./routes/api/user/index');
+var recoveryAPI = require('./routes/api/user/recovery/index');
+
+
+var ingredient = require('./routes/api/ingredient');
 
 
 // view engine setup
@@ -79,6 +83,10 @@ app.use(express.static(path.join(__dirname, 'node_modules/sweetalert/dist')));
 
 // Web page route
 app.use('/', index);
+
+app.use('/auc/user', userAPI);
+app.use('/auc/user/recovery', recoveryAPI);
+
 app.use('/ingredient', ingredient);
 
 
