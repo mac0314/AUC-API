@@ -19,7 +19,7 @@ var conn = mysql.createConnection({
   host     : config.rds.host,
   user     : config.rds.user,
   password : config.rds.password,
-  database : config.rds.pipetdatabase
+  database : config.rds.aucdatabase
 });
 
 conn.connect();
@@ -93,7 +93,7 @@ function signup(email, password, platformName, callback){
       });
     },
     platform : function(callback){
-      var sql = "SELECT platform_id AS id FROM platform WHERE platform_name_sn = ?";
+      var sql = "SELECT platform_id AS id FROM platform WHERE name_sn = ?";
 
       var sqlParams = [platformName];
 
@@ -113,7 +113,7 @@ function signup(email, password, platformName, callback){
       });
     },
     authorization : function(callback){
-      var sql = "SELECT authorization_id AS id FROM authorization WHERE auth_name_sn = ?";
+      var sql = "SELECT authorization_id AS id FROM authorization WHERE name_sn = ?";
 
       var authName = "user";
 
@@ -758,7 +758,7 @@ exports.signin = function(email, password, platformName, token, callback){
 
   resultObject.email = email;
 
-  var sql = "SELECT u.user_id AS id, u.email_mn AS email, u.password_ln AS password, a.auth_name_sn AS role, p.platform_name_sn AS platform FROM user AS u, role AS r, authorization AS a, interwork AS i, platform AS p WHERE u.user_id = r.user_id AND r.authorization_id = a.authorization_id AND u.user_id = i.user_id AND i.platform_id = p.platform_id AND email_mn = ? AND platform_name_sn = ?";
+  var sql = "SELECT u.user_id AS id, u.email_mn AS email, u.password_ln AS password, a.name_sn AS role, p.name_sn AS platform FROM user AS u, role AS r, authorization AS a, interwork AS i, platform AS p WHERE u.user_id = r.user_id AND r.authorization_id = a.authorization_id AND u.user_id = i.user_id AND i.platform_id = p.platform_id AND email_mn = ? AND p.name_sn = ?";
 
   var sqlParams = [email, platformName];
 
