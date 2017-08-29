@@ -3,7 +3,7 @@ var config = require('config.json')('./config/config.json');
 
 var mongoose = require('mongoose');
 
-var uri = 'mongodb://localhost/auc';
+var uri = 'mongodb://localhost:27017/auc';
 
 mongoose.connect(uri);
 

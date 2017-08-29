@@ -1158,3 +1158,34 @@ function changeSigninTime(email, callback){
   callback(null, true);
 
 };
+
+
+exports.loadAllUser =  function(callback){
+  console.log("loadAllUser");
+
+  var resultObject = new Object({});
+
+  var sql = "SELECT * FROM user";
+
+  conn.query(sql, function(error, resultLoad){
+    if(error){
+      var logSummary = "loadAllUser error";
+      console.log(logSummary);
+      console.log(error);
+
+      resultObject.load = false;
+      resultObject.user = null;
+
+      var errorTitle = errorPrefix + logSummary;
+
+      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
+        callback(true, resultObject);
+      });
+    }else{
+      resultObject.load = true;
+      resultObject.user = resultLoad;
+
+      callback(null, resultObject);
+    }
+  });
+};

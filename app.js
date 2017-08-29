@@ -60,9 +60,11 @@ var mysql = require('mysql');
 // routes module
 var index = require('./routes/index');
 
+var deviceAPI = require('./routes/api/device/index');
+var sensorAPI = require('./routes/api/sensor/index');
+
 var userAPI = require('./routes/api/user/index');
 var recoveryAPI = require('./routes/api/user/recovery/index');
-
 
 var ingredient = require('./routes/api/ingredient');
 
@@ -83,6 +85,9 @@ app.use(express.static(path.join(__dirname, 'node_modules/sweetalert/dist')));
 
 // Web page route
 app.use('/', index);
+
+app.use('/auc/device', deviceAPI);
+app.use('/auc/sensor', sensorAPI);
 
 app.use('/auc/user', userAPI);
 app.use('/auc/user/recovery', recoveryAPI);

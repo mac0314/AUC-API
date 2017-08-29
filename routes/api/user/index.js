@@ -33,22 +33,13 @@ router.get('/:email/duplicate', function(req, res, next) {
 
 	Read user.
 */
-router.get('/', authMiddleware, function(req, res, next) {
+router.get('/', function(req, res, next) {
   console.log('get user');
-  var email = req.decoded.data.email;
-  var role = req.decoded.data.role;
   var resultObject = new Object({});
 
-  var userObject = new Object({});
-
-  // TODO modify user data
-  console.log(email, role);
-
-  userObject.email = email;
-  userObject.role = role;
-  resultObject.user = userObject;
-
-  res.json(resultObject);
+  userModel.loadAllUser(function(error, userObject){
+    res.json(userObject);
+  });
 });
 
 
@@ -126,8 +117,8 @@ router.post('/withdraw', function(req, res, next) {
 
 	Try user signin.
 */
-router.post('/signin/:platformName', function(req, res, next) {
-	var platformName = req.params.platformName;
+router.post('/signin/:platformName?', function(req, res, next) {
+	var platformName = req.params.platformName || "local";
 	var email = req.body.email.trim();
 	var password = req.body.password;
 
