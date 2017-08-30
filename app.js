@@ -68,6 +68,8 @@ var recoveryAPI = require('./routes/api/user/recovery/index');
 
 var ingredient = require('./routes/api/ingredient');
 
+var recipeParser = require('./routes/api/recipe/parser');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -87,10 +89,12 @@ app.use(express.static(path.join(__dirname, 'node_modules/sweetalert/dist')));
 app.use('/', index);
 
 app.use('/auc/device', deviceAPI);
+app.use('/auc/recipe', recipeParser);
 app.use('/auc/sensor', sensorAPI);
 
 app.use('/auc/user', userAPI);
 app.use('/auc/user/recovery', recoveryAPI);
+
 
 app.use('/ingredient', ingredient);
 
