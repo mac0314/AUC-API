@@ -164,6 +164,8 @@ function signup(email, password, platformName, callback){
       } else {
           console.log("signup complete");
 
+          var userId = -1;
+
           var userCheck = true;
           if(results.user.length > 0){
             userCheck = false;
@@ -207,12 +209,14 @@ function signup(email, password, platformName, callback){
 
                 conn.query(sql, function(error, resultCommit, fields){
                   console.log("commit");
-                  //console.log(resultCommit);
+                  console.log(resultCommit);
+                  console.log(result);
 
                   resultObject.signup = true;
                   resultObject.setting = true;
                   resultObject.information = true;
                   resultObject.detailInformation = true;
+                  resultObject.insertId = userId;
 
                   callback(null, resultObject);
                 });
@@ -267,7 +271,7 @@ function signup(email, password, platformName, callback){
                 });
               }else{
 
-                var userId = resultUser.insertId;
+                userId = resultUser.insertId;
 
                 callback(null, userId);
               }
@@ -1184,6 +1188,130 @@ exports.loadAllUser =  function(callback){
     }else{
       resultObject.load = true;
       resultObject.user = resultLoad;
+
+      callback(null, resultObject);
+    }
+  });
+};
+
+/*
+  Have table
+*/
+exports.addHave = function(userId, deviceId, callback){
+  console.log("addHave");
+
+  var resultObject = new Object({});
+
+  var sql = "INSERT INTO have (user_id, device_id) VALUE (?, ?)";
+
+  var sqlParams = [userId, deviceId];
+
+  conn.query(sql, sqlParams, function(error, resultInsert){
+    if(error){
+      var logSummary = "insertHave error"
+      console.log(logSummary);
+      console.log(error);
+
+      resultObject.insert = false;
+
+      var errorTitle = errorPrefix + logSummary;
+
+      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
+        callback(true, resultObject);
+      });
+    }else{
+      resultObject.insert = true;
+      resultObject.insertId = resultInsert.insertId;
+
+      callback(null, resultObject);
+    }
+  });
+};
+
+exports.loadHave =  function(callback){
+  console.log("loadHave");
+
+  var resultObject = new Object({});
+
+  var sql = "SELECT * FROM have";
+
+  conn.query(sql, function(error, resultLoad){
+    if(error){
+      var logSummary = "loadHave error";
+      console.log(logSummary);
+      console.log(error);
+
+      resultObject.load = false;
+      resultObject.have = null;
+
+      var errorTitle = errorPrefix + logSummary;
+
+      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
+        callback(true, resultObject);
+      });
+    }else{
+      resultObject.load = true;
+      resultObject.have = resultLoad;
+
+      callback(null, resultObject);
+    }
+  });
+};
+
+exports.updateHave = function(haveId, postUserId, postDeviceId, callback){
+  console.log("updateHave");
+
+  var resultObject = new Object({});
+
+  var sql = "UPDATE have SET user_id = ?, device_id = ? WHERE have_id = ?";
+
+  var sqlParams = [postUserId, postDeviceId, haveId];
+
+  conn.query(sql, sqlParams, function(error, resultUpdate){
+    if(error){
+      var logSummary = "updateHave error";
+      console.log(logSummary);
+      console.log(error);
+
+      resultObject.update = false;
+
+      var errorTitle = errorPrefix + logSummary;
+
+      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
+        callback(true, resultObject);
+      });
+    }else{
+      resultObject.update = true;
+
+      callback(null, resultObject);
+    }
+  });
+};
+
+exports.removeHave = function(haveId, callback){
+  console.log("removeHave");
+
+  var resultObject = new Object({});
+
+  var sql = "DELETE FROM have WHERE have_id  = ?";
+
+  var sqlParams = [haveId];
+
+  conn.query(sql, sqlParams, function(error, resultRemove){
+    if(error){
+      var logSummary = "removeHave error";
+      console.log(logSummary);
+      console.log(error);
+
+      resultObject.remove = false;
+
+      var errorTitle = errorPrefix + logSummary;
+
+      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
+        callback(true, resultObject);
+      });
+    }else{
+      resultObject.remove = true;
 
       callback(null, resultObject);
     }

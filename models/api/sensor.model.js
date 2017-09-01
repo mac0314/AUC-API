@@ -42,6 +42,7 @@ exports.addSensor = function(name, description, serialNumber, callback){
       });
     }else{
       resultObject.insert = true;
+      resultObject.insertId = resultInsert.insertId;
 
       callback(null, resultObject);
     }

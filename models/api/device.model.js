@@ -46,6 +46,7 @@ exports.addDevice = function(name, description, serialNumber, callback){
       });
     }else{
       resultObject.insert = true;
+      resultObject.insertId = resultInsert.insertId;
 
       callback(null, resultObject);
     }
@@ -144,6 +145,37 @@ exports.addInclude = function(deviceId, sensorId, callback){
       });
     }else{
       resultObject.insert = true;
+      resultObject.insertId = resultInsert.insertId;
+
+      callback(null, resultObject);
+    }
+  });
+};
+
+exports.loadInclude =  function(callback){
+  console.log("loadInclude");
+
+  var resultObject = new Object({});
+
+  var sql = "SELECT * FROM include";
+
+  conn.query(sql, function(error, resultLoad){
+    if(error){
+      var logSummary = "loadInclude error";
+      console.log(logSummary);
+      console.log(error);
+
+      resultObject.load = false;
+      resultObject.include = null;
+
+      var errorTitle = errorPrefix + logSummary;
+
+      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
+        callback(true, resultObject);
+      });
+    }else{
+      resultObject.load = true;
+      resultObject.include = resultLoad;
 
       callback(null, resultObject);
     }
@@ -153,6 +185,31 @@ exports.addInclude = function(deviceId, sensorId, callback){
 exports.updateInclude = function(includeId, postDeviceId, postSensorId, callback){
   console.log("updateInclude");
 
+  var resultObject = new Object({});
+
+  var sql = "UPDATE include SET device_id = ?, sensor_id = ? WHERE include_id = ?";
+
+  var sqlParams = [postDeviceId, postSensorId, includeId];
+
+  conn.query(sql, sqlParams, function(error, resultUpdate){
+    if(error){
+      var logSummary = "updateInclude error";
+      console.log(logSummary);
+      console.log(error);
+
+      resultObject.update = false;
+
+      var errorTitle = errorPrefix + logSummary;
+
+      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
+        callback(true, resultObject);
+      });
+    }else{
+      resultObject.update = true;
+
+      callback(null, resultObject);
+    }
+  });
 };
 
 exports.removeInclude = function(includeId, callback){
