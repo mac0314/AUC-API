@@ -3,7 +3,7 @@ var config = require('config.json')('./config/config.json');
 
 var modelLog = "Recipe";
 var errorModel = require('./error.model');
-var errorPrefix = "sensorModel/";
+var errorPrefix = "recipeModel/";
 
 var dateFormat = require('dateformat');
 
@@ -19,18 +19,18 @@ conn.connect();
 
 
 
-exports.addSensor = function(name, description, serialNumber, callback){
-  console.log("addSensor");
+exports.addRecipe = function(name, content, likesNum, callback){
+  console.log("add" + modelLog);
 
   var resultObject = new Object({});
 
-  var sql = "INSERT INTO sensor (name_sn, description_ln, serial_number_mn) VALUE (?, ?, ?)";
+  var sql = "INSERT INTO recipe (name_sn, content_txt, hits_n, likes_n) VALUE (?, ?, 0, ?)";
 
-  var sqlParams = [name, description, serialNumber];
+  var sqlParams = [name, content, likesNum];
 
   conn.query(sql, sqlParams, function(error, resultInsert){
     if(error){
-      var logSummary = "insertSensor error";
+      var logSummary = "insert " + modelLog + " error";
       console.log(logSummary);
       console.log(error);
 
@@ -51,21 +51,21 @@ exports.addSensor = function(name, description, serialNumber, callback){
 };
 
 
-exports.loadAllSensor =  function(callback){
-  console.log("loadAllSensor");
+exports.loadAllRecipe =  function(callback){
+  console.log("loadAll" + modelLog);
 
   var resultObject = new Object({});
 
-  var sql = "SELECT * FROM sensor";
+  var sql = "SELECT * FROM recipe";
 
   conn.query(sql, function(error, resultLoad){
     if(error){
-      var logSummary = "loadAllSensor error";
+      var logSummary = "loadAll" + modelLog + " error";
       console.log(logSummary);
       console.log(error);
 
       resultObject.load = false;
-      resultObject.sensor = null;
+      resultObject.recipe = null;
 
       var errorTitle = errorPrefix + logSummary;
 
@@ -74,25 +74,25 @@ exports.loadAllSensor =  function(callback){
       });
     }else{
       resultObject.load = true;
-      resultObject.sensor = resultLoad;
+      resultObject.recipe = resultLoad;
 
       callback(null, resultObject);
     }
   });
 };
 
-exports.updateSensor = function(sensorId, name, description, serialNumber, callback){
-  console.log("updateSensor");
+exports.updateRecipe = function(recipeId, name, content, hitsNum, likesNum, callback){
+  console.log("update" + modelLog);
 
   var resultObject = new Object({});
 
-  var sql = "UPDATE sensor SET name_sn = ?, description_ln = ?, serial_number_mn = ? WHERE sensor_id  = ?";
+  var sql = "UPDATE recipe SET name_sn = ?, content_txt = ?, hits_n = ?, likes_n = ? WHERE recipe_id = ?";
 
-  var sqlParams = [name, description, serialNumber, sensorId];
+  var sqlParams = [name, content, hitsNum, likesNum, recipeId];
 
   conn.query(sql, sqlParams, function(error, resultUpdate){
     if(error){
-      var logSummary = "updateSensor error";
+      var logSummary = "update" + modelLog + " error";
       console.log(logSummary);
       console.log(error);
 
@@ -111,18 +111,18 @@ exports.updateSensor = function(sensorId, name, description, serialNumber, callb
   });
 };
 
-exports.removeSensor = function(sensorId, callback){
-  console.log("removeSensor");
+exports.removeRecipe = function(recipeId, callback){
+  console.log("remove" + modelLog);
 
   var resultObject = new Object({});
 
-  var sql = "DELETE FROM sensor WHERE sensor_id  = ?";
+  var sql = "DELETE FROM recipe WHERE recipe_id  = ?";
 
-  var sqlParams = [sensorId];
+  var sqlParams = [recipeId];
 
   conn.query(sql, sqlParams, function(error, resultRemove){
     if(error){
-      var logSummary = "removeSensor error";
+      var logSummary = "remove" + modelLog + " error";
       console.log(logSummary);
       console.log(error);
 

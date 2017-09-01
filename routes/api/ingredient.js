@@ -3,7 +3,7 @@ var router = express.Router();
 
 var config = require('config.json')('./config/config.json');
 
-var ingredientModel = require('../../models/api/ingredient');
+var ingredientModel = require('../../models/api/ingredient.model');
 
 /*
   GET
@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
     if(error){
 
     }else{
-      
+
     }
     res.json(ingredientObject);
   });

@@ -4,10 +4,10 @@ var config = require('config.json')('./config/config.json');
 var mongoose = require('mongoose');
 
 // Release
-var uri = config.docker.mongodb;
+//var uri = config.docker.mongodb;
 
 // Debug
-//var uri = 'mongodb://localhost:27017/auc';
+var uri = 'mongodb://localhost:27017/auc';
 
 mongoose.connect(uri);
 

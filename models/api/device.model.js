@@ -85,11 +85,37 @@ exports.loadAllDevice =  function(callback){
 };
 
 exports.updateDevice = function(deviceId, name, description, serialNumber, callback){
-  console.log("updateDevice");
+  console.log("update" + modelLog);
+
+  var resultObject = new Object({});
+
+  var sql = "UPDATE device SET name_sn = ?, description_ln = ?, serial_number_mn = ? WHERE device_id = ?";
+
+  var sqlParams = [name, description, serialNumber, deviceId];
+
+  conn.query(sql, sqlParams, function(error, resultUpdate){
+    if(error){
+      var logSummary = "update" + modelLog + " error";
+      console.log(logSummary);
+      console.log(error);
+
+      resultObject.update = false;
+
+      var errorTitle = errorPrefix + logSummary;
+
+      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
+        callback(true, resultObject);
+      });
+    }else{
+      resultObject.update = true;
+
+      callback(null, resultObject);
+    }
+  });
 };
 
 exports.removeDevice = function(deviceId, callback){
-  console.log("removeDevice");
+  console.log("remove" + modelLog);
 
   var resultObject = new Object({});
 
@@ -99,7 +125,7 @@ exports.removeDevice = function(deviceId, callback){
 
   conn.query(sql, sqlParams, function(error, resultRemove){
     if(error){
-      var logSummary = "removeDevice error";
+      var logSummary = "remove" + modelLog + " error";
       console.log(logSummary);
       console.log(error);
 
