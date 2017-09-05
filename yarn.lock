@@ -309,6 +309,10 @@ debug@^2.2.0, debug@~2.2.0:
   dependencies:
     ms "0.7.1"
 
+decode-uri-component@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
+
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
@@ -905,7 +909,7 @@ oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
 
-object-assign@^4:
+object-assign@^4, object-assign@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -982,6 +986,14 @@ qs@6.2.0:
 qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
+
+query-string@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-5.0.0.tgz#fbdf7004b4d2aff792f9871981b7a2794f555947"
+  dependencies:
+    decode-uri-component "^0.2.0"
+    object-assign "^4.1.0"
+    strict-uri-encode "^1.0.0"
 
 querystring@0.2.0:
   version "0.2.0"
@@ -1239,6 +1251,10 @@ statuses@~1.2.1:
 streamsink@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/streamsink/-/streamsink-1.2.0.tgz#efafee9f1e22d3591ed7de3dcaa95c3f5e79f73c"
+
+strict-uri-encode@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
 
 string_decoder@~1.0.0, string_decoder@~1.0.3:
   version "1.0.3"

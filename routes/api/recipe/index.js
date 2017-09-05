@@ -109,7 +109,7 @@ router.get('/nuc/:recipeId/:type', function(req, res, next) {
       resultObject.name = name;
       resultObject.summary = summary;
       resultObject.content = content;
-      resultObject.likesNum = likesNum;
+      resultObject.likesNum = Number(likesNum);
 
       res.json(resultObject);
     });
