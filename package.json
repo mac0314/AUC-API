@@ -15,6 +15,7 @@
     "url": "https://github.com/mac0314/AUC/issues"
   },
   "dependencies": {
+    "@google-cloud/speech": "^0.10.2",
     "async": "^2.4.0",
     "aws-sdk": "^2.48.0",
     "bcryptjs": "^2.4.0",

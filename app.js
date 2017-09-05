@@ -62,6 +62,8 @@ var index = require('./routes/index');
 
 var artikAPI = require('./routes/api/artik/index');
 
+var gcloudAPI = require('./routes/api/gcloud/index');
+
 var deviceAPI = require('./routes/api/device/index');
 var includeAPI = require('./routes/api/device/include/index');
 var sensorAPI = require('./routes/api/sensor/index');
@@ -97,6 +99,8 @@ app.use(express.static(path.join(__dirname, 'node_modules/sweetalert/dist')));
 app.use('/', index);
 
 app.use('/auc/artik', artikAPI);
+
+app.use('/auc/gcloud', gcloudAPI);
 
 app.use('/auc/device', deviceAPI);
 app.use('/auc/device/include', includeAPI);
