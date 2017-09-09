@@ -1178,7 +1178,7 @@ exports.loadAllUser =  function(callback){
       console.log(error);
 
       resultObject.load = false;
-      resultObject.user = null;
+      resultObject.data = null;
 
       var errorTitle = errorPrefix + logSummary;
 
@@ -1187,18 +1187,51 @@ exports.loadAllUser =  function(callback){
       });
     }else{
       resultObject.load = true;
-      resultObject.user = resultLoad;
+      resultObject.data = resultLoad;
 
       callback(null, resultObject);
     }
   });
 };
 
+
+
 /*
   Have table
 */
-exports.addHave = function(userId, deviceId, callback){
-  console.log("addHave");
+exports.addHaveByEmail = function(email, deviceId, callback){
+  console.log("addHaveByEmail");
+
+  var resultObject = new Object({});
+
+  var sql = "INSERT INTO have (user_id, device_id) VALUE ((SELECT user_id FROM user WHERE email_mn = ?), ?)";
+
+  var sqlParams = [email, deviceId];
+
+  conn.query(sql, sqlParams, function(error, resultInsert){
+    if(error){
+      var logSummary = "insertHave error"
+      console.log(logSummary);
+      console.log(error);
+
+      resultObject.insert = false;
+
+      var errorTitle = errorPrefix + logSummary;
+
+      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
+        callback(true, resultObject);
+      });
+    }else{
+      resultObject.insert = true;
+      resultObject.insertId = resultInsert.insertId;
+
+      callback(null, resultObject);
+    }
+  });
+};
+
+exports.addHaveById = function(userId, deviceId, callback){
+  console.log("addHaveById");
 
   var resultObject = new Object({});
 
@@ -1228,12 +1261,12 @@ exports.addHave = function(userId, deviceId, callback){
   });
 };
 
-exports.loadHave =  function(callback){
-  console.log("loadHave");
+exports.loadAllHave =  function(callback){
+  console.log("loadAllHave");
 
   var resultObject = new Object({});
 
-  var sql = "SELECT * FROM have";
+  var sql = "SELECT * FROM have AS h, user AS u WHERE h.user_id = u.user_id";
 
   conn.query(sql, function(error, resultLoad){
     if(error){
@@ -1242,7 +1275,7 @@ exports.loadHave =  function(callback){
       console.log(error);
 
       resultObject.load = false;
-      resultObject.have = null;
+      resultObject.data = null;
 
       var errorTitle = errorPrefix + logSummary;
 
@@ -1251,7 +1284,39 @@ exports.loadHave =  function(callback){
       });
     }else{
       resultObject.load = true;
-      resultObject.have = resultLoad;
+      resultObject.data = resultLoad;
+
+      callback(null, resultObject);
+    }
+  });
+};
+
+exports.loadHaveByEmail =  function(email, callback){
+  console.log("loadHaveByEmail");
+
+  var resultObject = new Object({});
+
+  var sql = "SELECT * FROM have AS h, user AS u WHERE h.user_id = u.user_id AND u.email_mn = ?";
+
+  var sqlParams = [email];
+
+  conn.query(sql, sqlParams, function(error, resultLoad){
+    if(error){
+      var logSummary = "loadHave error";
+      console.log(logSummary);
+      console.log(error);
+
+      resultObject.load = false;
+      resultObject.data = null;
+
+      var errorTitle = errorPrefix + logSummary;
+
+      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
+        callback(true, resultObject);
+      });
+    }else{
+      resultObject.load = true;
+      resultObject.data = resultLoad;
 
       callback(null, resultObject);
     }

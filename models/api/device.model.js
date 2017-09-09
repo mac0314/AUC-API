@@ -68,7 +68,7 @@ exports.loadAllDevice =  function(callback){
       console.log(error);
 
       resultObject.load = false;
-      resultObject.device = null;
+      resultObject.data = null;
 
       var errorTitle = errorPrefix + logSummary;
 
@@ -77,7 +77,7 @@ exports.loadAllDevice =  function(callback){
       });
     }else{
       resultObject.load = true;
-      resultObject.device = resultLoad;
+      resultObject.data = resultLoad;
 
       callback(null, resultObject);
     }
@@ -192,7 +192,7 @@ exports.loadInclude =  function(callback){
       console.log(error);
 
       resultObject.load = false;
-      resultObject.include = null;
+      resultObject.data = null;
 
       var errorTitle = errorPrefix + logSummary;
 
@@ -201,7 +201,7 @@ exports.loadInclude =  function(callback){
       });
     }else{
       resultObject.load = true;
-      resultObject.include = resultLoad;
+      resultObject.data = resultLoad;
 
       callback(null, resultObject);
     }

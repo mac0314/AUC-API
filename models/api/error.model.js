@@ -49,11 +49,11 @@ exports.reportErrorLog = function(userId, title, errorLog, callback){
 
         conn.query(sql, sqlParams, function(error, result){
           if(error){
-            resultObject.occur = false;
+            resultObject.insert = false;
 
             callback(true, resultObject);
           }else{
-            resultObject.occur = true;
+            resultObject.insert = true;
 
             callback(null, resultObject);
           }

@@ -65,7 +65,7 @@ exports.loadAllRecipe =  function(callback){
       console.log(error);
 
       resultObject.load = false;
-      resultObject.recipe = null;
+      resultObject.data = null;
 
       var errorTitle = errorPrefix + logSummary;
 
@@ -74,7 +74,7 @@ exports.loadAllRecipe =  function(callback){
       });
     }else{
       resultObject.load = true;
-      resultObject.recipe = resultLoad;
+      resultObject.data = resultLoad;
 
       callback(null, resultObject);
     }

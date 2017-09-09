@@ -65,7 +65,7 @@ exports.loadAllSensor =  function(callback){
       console.log(error);
 
       resultObject.load = false;
-      resultObject.sensor = null;
+      resultObject.data = null;
 
       var errorTitle = errorPrefix + logSummary;
 
@@ -74,7 +74,7 @@ exports.loadAllSensor =  function(callback){
       });
     }else{
       resultObject.load = true;
-      resultObject.sensor = resultLoad;
+      resultObject.data = resultLoad;
 
       callback(null, resultObject);
     }

@@ -11,12 +11,20 @@ var userModel = require('../../../../models/api/user.model');
 
 	Read have.
 */
-router.get('/', function(req, res, next) {
+router.get('/:email?', function(req, res, next) {
+  var email = req.params.email || "";
   console.log('get have');
 
-  userModel.loadHave(function(error, resultObject){
-  	res.json(resultObject);
-  });
+  if(email === ""){
+    userModel.loadAllHave(function(error, resultObject){
+    	res.json(resultObject);
+    });
+  }else{
+    userModel.loadHaveByEmail(email, function(error, resultObject){
+    	res.json(resultObject);
+    });
+  }
+
 });
 
 
@@ -26,14 +34,23 @@ router.get('/', function(req, res, next) {
 	Create have.
 */
 router.post('/', function(req, res, next) {
-  var userId = req.body.userId;
+  var userId = req.body.userId || 0;
+  var email = req.body.email;
   var deviceId = req.body.deviceId;
 
   console.log("Create have");
 
-  userModel.addHave(userId, deviceId, function(error, resultObject){
-  	res.json(resultObject);
-  });
+  if(userId === 0){
+    userModel.addHaveByEmail(email, deviceId, function(error, resultObject){
+    	res.json(resultObject);
+    });
+  }else{
+    userModel.addHaveById(userId, deviceId, function(error, resultObject){
+    	res.json(resultObject);
+    });
+  }
+
+
 });
 
 /*

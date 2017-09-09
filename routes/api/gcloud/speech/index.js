@@ -8,7 +8,7 @@ var config = require('config.json')('./config/config.json');
 
 	gcloud speech API
 */
-router.get('/', function(req, res, next) {
+router.get('/audio', function(req, res, next) {
   console.log("gcloud speech");
   var speech = require('@google-cloud/speech');
 

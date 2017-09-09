@@ -62,7 +62,7 @@ var index = require('./routes/index');
 
 var artikAPI = require('./routes/api/artik/index');
 
-var gcloudAPI = require('./routes/api/gcloud/index');
+var speechAPI = require('./routes/api/gcloud/speech/index');
 
 var deviceAPI = require('./routes/api/device/index');
 var includeAPI = require('./routes/api/device/include/index');
@@ -70,6 +70,7 @@ var sensorAPI = require('./routes/api/sensor/index');
 
 var userAPI = require('./routes/api/user/index');
 var haveAPI = require('./routes/api/user/have/index');
+var informAPI = require('./routes/api/user/inform/index');
 var recoveryAPI = require('./routes/api/user/recovery/index');
 
 var weatherAPI = require('./routes/api/weather/index');
@@ -100,7 +101,7 @@ app.use('/', index);
 
 app.use('/auc/artik', artikAPI);
 
-app.use('/auc/gcloud', gcloudAPI);
+app.use('/auc/gcloud/speech', speechAPI);
 
 app.use('/auc/device', deviceAPI);
 app.use('/auc/device/include', includeAPI);
@@ -109,6 +110,7 @@ app.use('/auc/sensor', sensorAPI);
 
 app.use('/auc/user', userAPI);
 app.use('/auc/user/have', haveAPI);
+app.use('/auc/user/inform', informAPI);
 app.use('/auc/user/recovery', recoveryAPI);
 
 app.use('/auc/weather', weatherAPI);
