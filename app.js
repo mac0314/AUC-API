@@ -69,8 +69,10 @@ var includeAPI = require('./routes/api/device/include/index');
 var sensorAPI = require('./routes/api/sensor/index');
 
 var userAPI = require('./routes/api/user/index');
+var commentAPI = require('./routes/api/user/comment/index');
 var haveAPI = require('./routes/api/user/have/index');
 var informAPI = require('./routes/api/user/inform/index');
+var postingAPI = require('./routes/api/user/posting/index');
 var recoveryAPI = require('./routes/api/user/recovery/index');
 
 var weatherAPI = require('./routes/api/weather/index');
@@ -80,7 +82,6 @@ var ingredient = require('./routes/api/ingredient');
 var nutrient = require('./routes/api/nutrient/index')
 
 var recipeParser = require('./routes/api/recipe/index');
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -109,8 +110,10 @@ app.use('/auc/recipe', recipeParser);
 app.use('/auc/sensor', sensorAPI);
 
 app.use('/auc/user', userAPI);
+app.use('/auc/user/comment', commentAPI);
 app.use('/auc/user/have', haveAPI);
 app.use('/auc/user/inform', informAPI);
+app.use('/auc/user/posting', postingAPI);
 app.use('/auc/user/recovery', recoveryAPI);
 
 app.use('/auc/weather', weatherAPI);
