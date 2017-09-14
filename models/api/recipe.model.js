@@ -19,14 +19,14 @@ conn.connect();
 
 
 
-exports.addRecipe = function(name, content, likesNum, callback){
+exports.addRecipe = function(name, summary, content, imagePath, recipeId, type, likesNum, callback){
   console.log("add" + modelLog);
 
   var resultObject = new Object({});
 
-  var sql = "INSERT INTO recipe (name_sn, content_txt, hits_n, likes_n) VALUE (?, ?, 0, ?)";
+  var sql = "INSERT INTO recipe (name_sn, summary_mn, content_txt, image_path_ln, recipe_n, type_sn, hits_n, likes_n) VALUE (?, ?, ?, ?, ?, ?, 0, ?)";
 
-  var sqlParams = [name, content, likesNum];
+  var sqlParams = [name, summary, content, imagePath, Number(recipeId), type, Number(likesNum)];
 
   conn.query(sql, sqlParams, function(error, resultInsert){
     if(error){

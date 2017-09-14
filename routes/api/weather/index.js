@@ -1,13 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-var config = require('config.json')('./config/config.json');
+var owmAPI = require('../../../controllers/api/owm.controller');
 
-var request = require('request');
 
-const queryString = require('query-string');
-
-var token = config.openweathermap.token;
 /*
 	GET
 
@@ -16,11 +12,9 @@ var token = config.openweathermap.token;
 */
 router.get('/openweathermap', function(req, res, next) {
   var queryObject = req.query;
-  queryObject.appid = token;
-  var url = "http://api.openweathermap.org/data/2.5/weather?" + queryString.stringify(queryObject);
 
-  request(url, function (error, response, html) {
-    res.json(JSON.parse(response.body));
+  owmAPI.getWeatherByGPS(queryObject, function(error, resultObject){
+    res.json(resultObject);
   });
 });
 

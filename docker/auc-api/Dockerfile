@@ -1,5 +1,5 @@
 FROM node:boron
-MAINTAINER Foo Bar <rladudals02@gmail.com>
+MAINTAINER mac0314 <rladudals02@gmail.com>
 
 # 앱 디렉토리 생성
 RUN mkdir -p /usr/src/app
@@ -13,4 +13,5 @@ RUN npm install
 COPY . /usr/src/app
 
 EXPOSE 3000
-CMD [ "npm", "start" ]
+# config folder 없음
+# CMD [ "npm", "start" ]

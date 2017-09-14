@@ -68,6 +68,8 @@ var deviceAPI = require('./routes/api/device/index');
 var includeAPI = require('./routes/api/device/include/index');
 var sensorAPI = require('./routes/api/sensor/index');
 
+var speakerAPI = require('./routes/api/speaker/index');
+
 var userAPI = require('./routes/api/user/index');
 var commentAPI = require('./routes/api/user/comment/index');
 var haveAPI = require('./routes/api/user/have/index');
@@ -77,7 +79,7 @@ var recoveryAPI = require('./routes/api/user/recovery/index');
 
 var weatherAPI = require('./routes/api/weather/index');
 
-var ingredient = require('./routes/api/ingredient');
+var ingredient = require('./routes/api/ingredient/index');
 
 var nutrient = require('./routes/api/nutrient/index')
 
@@ -109,6 +111,8 @@ app.use('/auc/device/include', includeAPI);
 app.use('/auc/recipe', recipeParser);
 app.use('/auc/sensor', sensorAPI);
 
+app.use('/auc/speaker', speakerAPI);
+
 app.use('/auc/user', userAPI);
 app.use('/auc/user/comment', commentAPI);
 app.use('/auc/user/have', haveAPI);
@@ -118,7 +122,7 @@ app.use('/auc/user/recovery', recoveryAPI);
 
 app.use('/auc/weather', weatherAPI);
 
-app.use('/ingredient', ingredient);
+app.use('/auc/ingredient', ingredient);
 app.use('/auc/nutrient', nutrient);
 
 // client = redis.createClient(config.redis.port, config.redis.host);
