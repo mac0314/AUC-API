@@ -13,6 +13,7 @@ var conn = mysql.createConnection({
 
 conn.connect();
 
+var modelLog = "Comment";
 var errorModel = require('./error.model');
 
 var errorPrefix = "commentModel/";
@@ -146,88 +147,24 @@ exports.removeCommentOwner = function (email, commentId, callback){
   });
 };
 
-function removeComment(commentId, callback){
-  console.log("removeComment");
-  var resultObject = new Object({});
 
+exports.removeComment = function removeComment (commentId, callback){
   var sql = "DELETE FROM comment WHERE comment_id = ?";
 
   var sqlParams = [commentId];
 
-  conn.query(sql, sqlParams, function(error, result){
-    if(error){
-      console.log("removeComment error");
-      console.log(error);
-
-      resultObject.remove = false;
-
-      var errorTitle = errorPrefix + "removeComment error";
-
-      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        callback(true, resultObject);
-      });
-    }else{
-      resultObject.remove = true;
-
-      callback(null, resultObject);
-    }
-  });
-}
-
-
-exports.removeComment = function removeComment(commentId, callback){
-  console.log("removeComment");
-  var resultObject = new Object({});
-
-  var sql = "DELETE FROM comment WHERE comment_id = ?";
-
-  var sqlParams = [commentId];
-
-  conn.query(sql, sqlParams, function(error, result){
-    if(error){
-      console.log("removeComment error");
-      console.log(error);
-
-      resultObject.remove = false;
-
-      var errorTitle = errorPrefix + "removeComment error";
-
-      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        callback(true, resultObject);
-      });
-    }else{
-      resultObject.remove = true;
-
-      callback(null, resultObject);
-    }
+  queryModel.request("delete", modelLog, sql, sqlParams, function(error, resultObject){
+    callback(error, resultObject);
   });
 };
 
 
 exports.removeAllComments = function(postingId, callback){
-  console.log("removeAllComments");
-  var resultObject = new Object({});
-
   var sql = "DELETE FROM comment WHERE posting_id = ?";
 
   var sqlParams = [postingId];
 
-  conn.query(sql, sqlParams, function(error, result){
-    if(error){
-      console.log("removeAllComments error");
-      console.log(error);
-
-      resultObject.remove = false;
-
-      var errorTitle = errorPrefix + "removeAllComments error";
-
-      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        callback(true, resultObject);
-      });
-    }else{
-      resultObject.remove = true;
-
-      callback(null, resultObject);
-    }
+  queryModel.request("delete", modelLog, sql, sqlParams, function(error, resultObject){
+    callback(error, resultObject);
   });
 };

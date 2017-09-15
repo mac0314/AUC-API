@@ -1,8 +1,6 @@
 
 var config = require('config.json')('./config/config.json');
 
-var dateFormat = require('dateformat');
-
 var mysql      = require('mysql');
 var conn = mysql.createConnection({
   host     : config.rds.host,
@@ -10,15 +8,6 @@ var conn = mysql.createConnection({
   password : config.rds.password,
   database : config.rds.pipetdatabase
 });
-
-conn.connect();
-
-exports.loadUnhandleError = function(userId, callback){
-  console.log("loadErrorLog");
-
-  var sql = "";
-};
-
 
 exports.reportErrorLog = function(userId, title, errorLog, callback){
   console.log("reportErrorLog");
@@ -29,13 +18,21 @@ exports.reportErrorLog = function(userId, title, errorLog, callback){
   var log = JSON.stringify(errorLog);
   var sqlParams = [title, log];
 
+  conn.connect();
+
   conn.query(sql, sqlParams, function(error, resultInsert){
     if(error){
+      resultObject.log = false;
       console.log(error);
 
+      conn.end();
+
+      callback(null, resultObject);
     }else{
       if(userId === null){
         resultObject.log = true;
+
+        conn.end();
 
         callback(null, resultObject);
       }else{
@@ -51,9 +48,13 @@ exports.reportErrorLog = function(userId, title, errorLog, callback){
           if(error){
             resultObject.insert = false;
 
+            conn.end();
+
             callback(true, resultObject);
           }else{
             resultObject.insert = true;
+
+            conn.end();
 
             callback(null, resultObject);
           }
@@ -62,12 +63,3 @@ exports.reportErrorLog = function(userId, title, errorLog, callback){
     }
   });
 };
-
-
-exports.removeErrorLog = function (email, commentId, callback){
-  console.log("removeErrorLog");
-};
-
-function removeErrorLog(commentId, callback){
-  console.log("removeErrorLog");
-}
