@@ -57,6 +57,21 @@ app.use( morgan('dev', {stream: accessLogStream}));
 
 var mysql = require('mysql');
 
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+// uncomment after placing your favicon in /public
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(morgan('dev'));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended:false, parameterLimit: 1000000}));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'node_modules/sweetalert/dist')));
+
 // routes module
 var index = require('./routes/index');
 
@@ -67,6 +82,8 @@ var speechAPI = require('./routes/api/gcloud/speech/index');
 var deviceAPI = require('./routes/api/device/index');
 var includeAPI = require('./routes/api/device/include/index');
 var sensorAPI = require('./routes/api/sensor/index');
+
+var refrigeAPI = require('./routes/api/refrigerator/index');
 
 var speakerAPI = require('./routes/api/speaker/index');
 
@@ -85,19 +102,6 @@ var nutrient = require('./routes/api/nutrient/index')
 
 var recipeParser = require('./routes/api/recipe/index');
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-// uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(morgan('dev'));
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended:false, parameterLimit: 1000000}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'dist')));
-app.use(express.static(path.join(__dirname, 'node_modules/sweetalert/dist')));
 
 // Web page route
 app.use('/', index);
@@ -110,6 +114,8 @@ app.use('/auc/device', deviceAPI);
 app.use('/auc/device/include', includeAPI);
 app.use('/auc/recipe', recipeParser);
 app.use('/auc/sensor', sensorAPI);
+
+app.use('/auc/refrigerator', refrigeAPI);
 
 app.use('/auc/speaker', speakerAPI);
 

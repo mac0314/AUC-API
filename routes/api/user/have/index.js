@@ -31,34 +31,39 @@ router.get('/:email?', function(req, res, next) {
 /*
 	POST
 
-	Create have.
+	Admin create have.
 */
 router.post('/', function(req, res, next) {
-  var userId = req.body.userId || 0;
-  var email = req.body.email;
+  var userId = req.body.userId;
   var deviceId = req.body.deviceId;
 
-  console.log("Create have");
-
-  if(userId === 0){
-    userModel.addHaveByEmail(email, deviceId, function(error, resultObject){
-    	res.json(resultObject);
-    });
-  }else{
-    userModel.addHaveById(userId, deviceId, function(error, resultObject){
-    	res.json(resultObject);
-    });
-  }
-
-
+  userModel.addHaveId(userId, deviceId, function(error, resultObject){
+  	res.json(resultObject);
+  });
 });
+
+
+/*
+	POST
+
+	User create have.
+*/
+router.post('/serial', function(req, res, next) {
+  var email = req.body.email;
+  var serialNumber = req.body.serialNumber;
+
+  userModel.addHaveSerial(email, serialNumber, function(error, resultObject){
+    res.json(resultObject);
+  });
+});
+
 
 /*
 	PUT
 
 	Update have.
 */
-router.put('/', function(req, res, next) {
+router.put('/id', function(req, res, next) {
   var haveId = req.body.haveId;
   var postUserId = req.body.postUserId;
   var postDeviceId = req.body.postDeviceId;

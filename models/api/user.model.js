@@ -12,7 +12,10 @@ var config = require('config.json')('./config/config.json');
 
 var dateFormat = require('dateformat');
 
+var modelLog = "User";
 var errorModel = require('./error.model');
+
+var queryModel = require('./query.model');
 
 var mysql      = require('mysql');
 var conn = mysql.createConnection({
@@ -1165,32 +1168,12 @@ function changeSigninTime(email, callback){
 
 
 exports.loadAllUser =  function(callback){
-  console.log("loadAllUser");
-
-  var resultObject = new Object({});
-
   var sql = "SELECT * FROM user";
 
-  conn.query(sql, function(error, resultLoad){
-    if(error){
-      var logSummary = "loadAllUser error";
-      console.log(logSummary);
-      console.log(error);
+  var sqlParams = [];
 
-      resultObject.load = false;
-      resultObject.data = null;
-
-      var errorTitle = errorPrefix + logSummary;
-
-      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        callback(true, resultObject);
-      });
-    }else{
-      resultObject.load = true;
-      resultObject.data = resultLoad;
-
-      callback(null, resultObject);
-    }
+  queryModel.request("select", modelLog, sql, sqlParams, function(error, resultObject){
+    callback(error, resultObject);
   });
 };
 
@@ -1199,186 +1182,62 @@ exports.loadAllUser =  function(callback){
 /*
   Have table
 */
-exports.addHaveByEmail = function(email, deviceId, callback){
-  console.log("addHaveByEmail");
+exports.addHaveSerial = function(email, serialNumber, callback){
+  var sql = "INSERT INTO have (user_id, device_id) VALUE ((SELECT user_id FROM user WHERE email_mn = ?), (SELECT device_id FROM device WHERE serial_number_mn = ?))";
 
-  var resultObject = new Object({});
+  var sqlParams = [email, serialNumber];
 
-  var sql = "INSERT INTO have (user_id, device_id) VALUE ((SELECT user_id FROM user WHERE email_mn = ?), ?)";
-
-  var sqlParams = [email, deviceId];
-
-  conn.query(sql, sqlParams, function(error, resultInsert){
-    if(error){
-      var logSummary = "insertHave error"
-      console.log(logSummary);
-      console.log(error);
-
-      resultObject.insert = false;
-
-      var errorTitle = errorPrefix + logSummary;
-
-      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        callback(true, resultObject);
-      });
-    }else{
-      resultObject.insert = true;
-      resultObject.insertId = resultInsert.insertId;
-
-      callback(null, resultObject);
-    }
+  queryModel.request("insert", modelLog, sql, sqlParams, function(error, resultObject){
+    callback(error, resultObject);
   });
 };
 
-exports.addHaveById = function(userId, deviceId, callback){
-  console.log("addHaveById");
-
-  var resultObject = new Object({});
-
+exports.addHaveId = function(userId, deviceId, callback){
   var sql = "INSERT INTO have (user_id, device_id) VALUE (?, ?)";
 
   var sqlParams = [userId, deviceId];
 
-  conn.query(sql, sqlParams, function(error, resultInsert){
-    if(error){
-      var logSummary = "insertHave error"
-      console.log(logSummary);
-      console.log(error);
-
-      resultObject.insert = false;
-
-      var errorTitle = errorPrefix + logSummary;
-
-      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        callback(true, resultObject);
-      });
-    }else{
-      resultObject.insert = true;
-      resultObject.insertId = resultInsert.insertId;
-
-      callback(null, resultObject);
-    }
+  queryModel.request("insert", modelLog, sql, sqlParams, function(error, resultObject){
+    callback(error, resultObject);
   });
 };
 
 exports.loadAllHave =  function(callback){
-  console.log("loadAllHave");
-
-  var resultObject = new Object({});
-
   var sql = "SELECT * FROM have AS h, user AS u WHERE h.user_id = u.user_id";
 
-  conn.query(sql, function(error, resultLoad){
-    if(error){
-      var logSummary = "loadHave error";
-      console.log(logSummary);
-      console.log(error);
+  var sqlParams = [];
 
-      resultObject.load = false;
-      resultObject.data = null;
-
-      var errorTitle = errorPrefix + logSummary;
-
-      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        callback(true, resultObject);
-      });
-    }else{
-      resultObject.load = true;
-      resultObject.data = resultLoad;
-
-      callback(null, resultObject);
-    }
+  queryModel.request("select", modelLog, sql, sqlParams, function(error, resultObject){
+    callback(error, resultObject);
   });
 };
 
 exports.loadHaveByEmail =  function(email, callback){
-  console.log("loadHaveByEmail");
-
-  var resultObject = new Object({});
-
   var sql = "SELECT * FROM have AS h, user AS u WHERE h.user_id = u.user_id AND u.email_mn = ?";
 
   var sqlParams = [email];
 
-  conn.query(sql, sqlParams, function(error, resultLoad){
-    if(error){
-      var logSummary = "loadHave error";
-      console.log(logSummary);
-      console.log(error);
-
-      resultObject.load = false;
-      resultObject.data = null;
-
-      var errorTitle = errorPrefix + logSummary;
-
-      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        callback(true, resultObject);
-      });
-    }else{
-      resultObject.load = true;
-      resultObject.data = resultLoad;
-
-      callback(null, resultObject);
-    }
+  queryModel.request("select", modelLog, sql, sqlParams, function(error, resultObject){
+    callback(error, resultObject);
   });
 };
 
 exports.updateHave = function(haveId, postUserId, postDeviceId, callback){
-  console.log("updateHave");
-
-  var resultObject = new Object({});
-
   var sql = "UPDATE have SET user_id = ?, device_id = ? WHERE have_id = ?";
 
   var sqlParams = [postUserId, postDeviceId, haveId];
 
-  conn.query(sql, sqlParams, function(error, resultUpdate){
-    if(error){
-      var logSummary = "updateHave error";
-      console.log(logSummary);
-      console.log(error);
-
-      resultObject.update = false;
-
-      var errorTitle = errorPrefix + logSummary;
-
-      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        callback(true, resultObject);
-      });
-    }else{
-      resultObject.update = true;
-
-      callback(null, resultObject);
-    }
+  queryModel.request("update", modelLog, sql, sqlParams, function(error, resultObject){
+    callback(error, resultObject);
   });
 };
 
 exports.removeHave = function(haveId, callback){
-  console.log("removeHave");
-
-  var resultObject = new Object({});
-
   var sql = "DELETE FROM have WHERE have_id  = ?";
 
   var sqlParams = [haveId];
 
-  conn.query(sql, sqlParams, function(error, resultRemove){
-    if(error){
-      var logSummary = "removeHave error";
-      console.log(logSummary);
-      console.log(error);
-
-      resultObject.remove = false;
-
-      var errorTitle = errorPrefix + logSummary;
-
-      errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        callback(true, resultObject);
-      });
-    }else{
-      resultObject.remove = true;
-
-      callback(null, resultObject);
-    }
+  queryModel.request("delete", modelLog, sql, sqlParams, function(error, resultObject){
+    callback(error, resultObject);
   });
 };

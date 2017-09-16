@@ -13,7 +13,7 @@ exports.requestDataAndSave = function (recipeId, type, callback){
 
   this.requestData(recipeId, type, function (error, recipeObject) {
     console.log(recipeObject);
-    recipeModel.addRecipe(recipeObject.name, recipeObject.summary, recipeObject.content, recipeObject.imagePath, Number(recipeObject.recipeId), recipeObject.type, Number(recipeObject.likesNum), function(error, objectSaved){
+    recipeModel.addRecipe(recipeObject.name, recipeObject.summary, recipeObject.content, recipeObject.imagePath, Number(recipeObject.recipeId), recipeObject.type, recipeObject.authorType, Number(recipeObject.likesNum), Number(recipeObject.temperature), function(error, objectSaved){
       callback(error, objectSaved);
     });
   });
@@ -45,6 +45,10 @@ exports.requestData = function requestData(recipeId, type, callback){
         });
         console.log(imagePath);
 
+        // TODO modify default
+        var temperature = "25";
+        var authorType = "nuc";
+
         var text = $(this).text().replace(/\t/g, "").replace(/\n/g, "").replace(/\s+$/g, "");
 
         var textArray = text.split("엔유씨몰 바로가기▼");
@@ -63,6 +67,8 @@ exports.requestData = function requestData(recipeId, type, callback){
         resultObject.imagePath = imagePath;
         resultObject.recipeId = recipeId;
         resultObject.type = type;
+        resultObject.authorType = authorType;
+        resultObject.temperature = temperature;
 
         console.log(resultObject);
 

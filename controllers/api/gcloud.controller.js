@@ -7,7 +7,7 @@ exports.decodeAudioFile = function(callback){
 
   var client = speech({
      projectId: config.gcloud.projectId,
-     keyFilename: './config/auc-iot-67c2bf57e1d0.json'
+     keyFilename: './config/auc-iot-e8e23e695d1c.json'
   });
 
   var languageCode = 'en-US';
@@ -51,7 +51,7 @@ exports.decodeAudioFile = function(callback){
   .catch(function(err) {
       console.error(err);
       resultObject.decode = false;
-      
+
       callback(true, resultObject);
   });
 };

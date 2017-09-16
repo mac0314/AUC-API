@@ -11,6 +11,8 @@ var conn = mysql.createConnection({
   database : config.rds.aucdatabase
 });
 
+// Basic form CRUD
+// queryType : "insert", "select", "update", "delete"
 exports.request = function(queryType, modelLogName, sql, sqlParams, callback){
   var errorPrefix = "Model/" + modelLogName + "/";
   console.log(queryType + modelLogName);

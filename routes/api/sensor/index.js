@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-var config = require('config.json')('./config/config.json');
-
 var sensorModel = require('../../../models/api/sensor.model');
 
 var authMiddleware = require('../../../middlewares/auth');
@@ -14,10 +12,9 @@ var authMiddleware = require('../../../middlewares/auth');
 */
 router.get('/', function(req, res, next) {
   console.log('get sensor');
-  var resultObject = new Object({});
 
-  sensorModel.loadAllSensor(function(error, sensorObject){
-  	res.json(sensorObject);
+  sensorModel.loadAllSensor(function(error, resultObject){
+  	res.json(resultObject);
   });
 });
 
@@ -34,8 +31,8 @@ router.post('/', function(req, res, next) {
 
   console.log("Create sensor");
 
-  sensorModel.addSensor(name, description, serialNumber, function(error, sensorObject){
-  	res.json(sensorObject);
+  sensorModel.addSensor(name, description, serialNumber, function(error, resultObject){
+  	res.json(resultObject);
   });
 });
 
@@ -50,12 +47,10 @@ router.put('/', function(req, res, next) {
   var description = req.body.description;
   var serialNumber = req.body.serialNumber;
 
-  var resultObject = new Object({});
-
   console.log("Update sensor");
 
-  sensorModel.updateSensor(sensorId, name, description, serialNumber, function(error, sensorObject){
-    res.json(sensorObject);
+  sensorModel.updateSensor(sensorId, name, description, serialNumber, function(error, resultObject){
+    res.json(resultObject);
   });
 });
 
@@ -70,8 +65,8 @@ router.delete('/', function(req, res, next) {
 
 	console.log("Delete sensor");
 
-  sensorModel.removeSensor(sensorId, function(error, sensorObject){
-    res.json(sensorObject);
+  sensorModel.removeSensor(sensorId, function(error, resultObject){
+    res.json(resultObject);
   });
 });
 

@@ -13,7 +13,7 @@ var mfpAPI = require('../../../controllers/api/mfp.controller');
 /*
   GET
 
-  ingredient data
+  Read ingredient data
 */
 router.get('/', function(req, res, next) {
   ingredientModel.loadIngredient(function(error, ingredientObject){
@@ -21,11 +21,25 @@ router.get('/', function(req, res, next) {
   });
 });
 
+/*
+  POST
+
+  Create ingredient data
+*/
+router.post('/', function(req, res, next) {
+  var name = req.body.name;
+  var degree = req.body.degree;
+  var nutrients = req.body.nutrients;
+
+  ingredientModel.addIngredient(name, degree, nutrients, function(error, resultObject){
+    res.json(resultObject);
+  });
+});
 
 /*
   POST
 
-  nutrient data
+  parse and save ingredient data
 */
 router.post('/parse/data', function(req, res, next) {
   var foodName = req.body.foodName;
@@ -35,5 +49,35 @@ router.post('/parse/data', function(req, res, next) {
     res.json(resultObject);
   });
 });
+
+/*
+	PUT
+
+	Update ingredient data.
+*/
+router.put('/', function(req, res, next) {
+  var name = req.body.name;
+  var degree = req.body.degree;
+  var nutrients = req.body.nutrients;
+
+  ingredientModel.updateIngredient(name, degree, nutrients, function(error, resultObject){
+    res.json(resultObject);
+  });
+});
+
+
+/*
+	DELETE
+
+	Delete nutrient data.
+*/
+router.delete('/', function(req, res, next) {
+  var name = req.body.name;
+
+  ingredientModel.removeIngredient(name, function(error, resultObject){
+    res.json(resultObject);
+  });
+});
+
 
 module.exports = router;

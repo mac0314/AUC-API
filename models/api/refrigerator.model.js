@@ -4,10 +4,10 @@ var errorModel = require('./error.model');
 
 var queryModel = require('./query.model');
 
-exports.addRecipe = function(name, description, callback){
-  var sql = "INSERT INTO ingredient (name_sn, description_ln) VALUE (?, ?)";
+exports.addRefrigerator = function(name, brand, variety, location, callback){
+  var sql = "INSERT INTO refrigerator (name_sn, brand_sn, variety_sn, location_ln) VALUE (?, ?, ?, ?)";
 
-  var sqlParams = [name, description];
+  var sqlParams = [name, brand, variety, location];
 
   queryModel.request("insert", modelLog, sql, sqlParams, function(error, resultObject){
     callback(error, resultObject);
@@ -15,8 +15,8 @@ exports.addRecipe = function(name, description, callback){
 };
 
 
-exports.loadAllRecipe =  function(callback){
-  var sql = "SELECT * FROM recipe";
+exports.loadAllRefrigerator =  function(callback){
+  var sql = "SELECT * FROM refrigerator";
 
   var sqlParams = [];
 
@@ -25,20 +25,20 @@ exports.loadAllRecipe =  function(callback){
   });
 };
 
-exports.updateRecipe = function(ingredientId, name, description, callback){
-  var sql = "UPDATE ingredient SET name_sn = ?, description_ln = ? WHERE ingredient_id = ?";
+exports.updateRefrigerator = function(refrigeratorId, name, brand, variety, location, callback){
+  var sql = "UPDATE refrigerator SET name_sn = ?, brand_sn, variety_sn, location_ln = ? WHERE refrigerator_id = ?";
 
-  var sqlParams = [name, description, ingredientId];
+  var sqlParams = [name, brand, variety, location, ingredientId];
 
   queryModel.request("update", modelLog, sql, sqlParams, function(error, resultObject){
     callback(error, resultObject);
   });
 };
 
-exports.removeRecipe = function(ingredientId, callback){
-  var sql = "DELETE FROM ingredient WHERE ingredient_id  = ?";
+exports.removeRefrigerator = function(refrigeratorId, callback){
+  var sql = "DELETE FROM refrigerator WHERE refrigerator_id  = ?";
 
-  var sqlParams = [ingredientId];
+  var sqlParams = [refrigeratorId];
 
   queryModel.request("delete", modelLog, sql, sqlParams, function(error, resultObject){
     callback(error, resultObject);
