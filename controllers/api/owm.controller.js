@@ -6,6 +6,12 @@ var request = require('request');
 
 var queryString = require('query-string');
 
+var redis = require("redis");
+var redisClient = redis.createClient(config.redis.port, config.redis.host);
+//redisClient.auth(config.redis.password);
+
+var recipeModel = require('../../models/api/recipe.model');
+
 var token = config.openweathermap.token;
 
 
@@ -17,7 +23,26 @@ exports.getWeatherByGPS = function getWeatherByGPS(queryObject, callback){
 
   request(url, function (error, response, html) {
     resultObject.load = true;
-    resultObject.data = JSON.parse(response.body);
-    callback(null, resultObject);
+    var data = JSON.parse(response.body);
+
+    var weather = data.weather.main;
+
+    var key = "";
+
+    if(weather === "Clear"){
+      key = "recipe/smoothy/id";
+    }else{
+      key = "recipe/dish/id";
+    }
+
+    redisClient.smembers(key, function(error, idObject){
+      var recommandId = Math.floor(Math.random() * idObject.length);
+
+      recipeModel.loadRecipe(idObject[recommandId], function(error , recipeObject){
+        resultObject.recipe = recipeObject;
+
+        callback(null, resultObject);
+      });
+    });
   });
 };

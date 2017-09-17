@@ -29,10 +29,10 @@ conn.connect();
 
 var secretKey = config.jwt.secretKey;
 
-const accessTokenExpireTime = '6h';
-const refreshTokenExpireTime = '30d';
+var accessTokenExpireTime = '6h';
+var refreshTokenExpireTime = '30d';
 
-const saltRounds = 10;
+var saltRounds = 10;
 
 var errorPrefix = "userModel/";
 
@@ -1164,11 +1164,11 @@ function changeSigninTime(email, callback){
 
   callback(null, true);
 
-};
+}
 
 
 exports.loadAllUser =  function(callback){
-  var sql = "SELECT * FROM user";
+  var sql = "SELECT user_id AS userId, email_mn AS email, update_pw_dtm AS updatePWTime FROM user";
 
   var sqlParams = [];
 
@@ -1202,20 +1202,17 @@ exports.addHaveId = function(userId, deviceId, callback){
   });
 };
 
-exports.loadAllHave =  function(callback){
-  var sql = "SELECT * FROM have AS h, user AS u WHERE h.user_id = u.user_id";
+
+exports.loadHaveByEmail =  function(email, callback){
+  var sql = "SELECT u.email_mn AS email, d.name_sn AS deviceName, d.description_ln AS description, d.serial_number_mn AS serialNumber FROM have AS h, user AS u, device AS d WHERE h.user_id = u.user_id AND h.device_id = d.device_id";
 
   var sqlParams = [];
 
-  queryModel.request("select", modelLog, sql, sqlParams, function(error, resultObject){
-    callback(error, resultObject);
-  });
-};
+  if(email !== null){
+    sql += " AND u.email_mn = ?";
 
-exports.loadHaveByEmail =  function(email, callback){
-  var sql = "SELECT * FROM have AS h, user AS u WHERE h.user_id = u.user_id AND u.email_mn = ?";
-
-  var sqlParams = [email];
+    sqlParams.push(email);
+  }
 
   queryModel.request("select", modelLog, sql, sqlParams, function(error, resultObject){
     callback(error, resultObject);
@@ -1240,4 +1237,9 @@ exports.removeHave = function(haveId, callback){
   queryModel.request("delete", modelLog, sql, sqlParams, function(error, resultObject){
     callback(error, resultObject);
   });
+};
+
+
+exports.addOwn = function(){
+
 };

@@ -12,18 +12,12 @@ var userModel = require('../../../../models/api/user.model');
 	Read have.
 */
 router.get('/:email?', function(req, res, next) {
-  var email = req.params.email || "";
+  var email = req.params.email || null;
   console.log('get have');
 
-  if(email === ""){
-    userModel.loadAllHave(function(error, resultObject){
-    	res.json(resultObject);
-    });
-  }else{
-    userModel.loadHaveByEmail(email, function(error, resultObject){
-    	res.json(resultObject);
-    });
-  }
+  userModel.loadHaveByEmail(email, function(error, resultObject){
+    res.json(resultObject);
+  });
 
 });
 

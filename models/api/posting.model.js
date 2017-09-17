@@ -91,13 +91,13 @@ exports.loadPosting = function(categoryName, postingId, orient, callback){
 
   if(categoryName === undefined){
     categorySql = "";
-    sqlParams = [Number(postingId)];
+    sqlParams.push(Number(postingId));
   }else{
     categorySql = " AND t.name_sn = ? "
-    sqlParams = [Number(postingId), categoryName];
+    sqlParams.push(Number(postingId), categoryName);
   }
 
-  var sql = "SELECT p.posting_id AS id, t.name_sn AS categoryName, p.image_path_ln AS imagePath, p.thumbnail_path_ln AS thumbnailPath, p.content_txt AS content, p.create_dtm AS createTime, p.update_dtm AS updateTime, p.comment_check AS commentCheck, u.email_mn AS email FROM user AS u, upload AS up, posting AS p, category AS c WHERE u.user_id = up.user_id AND p.posting_id=up.posting_id AND c.category_id = up.category_id AND p.posting_id " + sign + " ? " + categorySql + " ORDER BY p.posting_id " + order + " LIMIT 1";
+  sql = "SELECT p.posting_id AS id, t.name_sn AS categoryName, p.image_path_ln AS imagePath, p.thumbnail_path_ln AS thumbnailPath, p.content_txt AS content, p.create_dtm AS createTime, p.update_dtm AS updateTime, p.comment_check AS commentCheck, u.email_mn AS email FROM user AS u, upload AS up, posting AS p, category AS c WHERE u.user_id = up.user_id AND p.posting_id=up.posting_id AND c.category_id = up.category_id AND p.posting_id " + sign + " ? " + categorySql + " ORDER BY p.posting_id " + order + " LIMIT 1";
 
   //console.log(sql);
   //console.log(sqlParams);

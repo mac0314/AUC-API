@@ -91,3 +91,13 @@ exports.removeInclude = function(includeId, callback){
     callback(error, resultObject);
   });
 };
+
+exports.loadDeviceSensor = function(serialNumber, callback){
+  var sql = "SELECT * FROM device AS d, include AS i, sensor AS s WHERE d.device_id = i.device_id AND i.sensor_id = s.sensor_id AND d.serial_number_mn = ?";
+
+  var sqlParams = [serialNumber];
+
+  queryModel.request("select", modelLog, sql, sqlParams, function(error, resultObject){
+    callback(error, resultObject);
+  });
+};

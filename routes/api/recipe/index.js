@@ -44,8 +44,10 @@ router.post('/:recipeId/:type', function(req, res, next) {
 
   Recipe data
 */
-router.get('/', function(req, res, next) {
-  recipeModel.loadAllRecipe(function(error, recipeObject){
+router.get('/:recipeId?', function(req, res, next) {
+  var recipeId = req.params.recipeId || null;
+
+  recipeModel.loadRecipe(recipeId, function(error, recipeObject){
     res.json(recipeObject);
   });
 });

@@ -17,11 +17,18 @@ exports.addRecipe = function(name, summary, content, imagePath, recipeId, type, 
   });
 };
 
-
-exports.loadAllRecipe =  function(callback){
+exports.loadRecipe =  function(recipeId, callback){
   var sql = "SELECT recipe_id AS recipeId, name_sn AS nameSn, summary_mn AS summary, content_txt AS content, type_sn AS typeSn, author_type_sn AS authorType, recipe_n AS recipeNum, image_path_ln AS imagePath, hits_n AS hitsNum, likes_n AS likesNum, temperature_n AS temperature FROM recipe";
 
+  if(recipeId !== null){
+    sql += " WHERE recipe_id = ?"
+  }
+
   var sqlParams = [];
+
+  if(recipeId !== null){
+    sqlParams.push(recipeId);
+  }
 
   queryModel.request("select", modelLog, sql, sqlParams, function(error, resultObject){
     callback(error, resultObject);

@@ -28,7 +28,7 @@ exports.addIngredient = function (name, degree, nutrients, callback){
 
       callback(true, resultObject);
     }else{
-      if(findObject == null){
+      if(findObject === null){
         // No data
         resultObject.find = false;
         ingredient.save(function(error){
@@ -74,10 +74,10 @@ exports.loadIngredient = function (callback){
 exports.updateIngredient = function (name, degree, nutrients, callback){
   var ingredient = new Ingredient();
 
-  const doc = {
+  var doc = {
     degree: degree,
     nutrients: nutrients
-  }
+  };
 
   Ingredient.update({name: name}, doc, function(error, result){
     console.log(result);

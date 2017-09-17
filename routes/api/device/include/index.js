@@ -14,10 +14,25 @@ var deviceModel = require('../../../../models/api/device.model');
 router.get('/', function(req, res, next) {
   console.log('get include');
 
-  deviceModel.loadInclude(function(error, includeObject){
-  	res.json(includeObject);
+  deviceModel.loadInclude(function(error, resultObject){
+  	res.json(resultObject);
   });
 });
+
+/*
+	GET
+
+	Read include.
+*/
+router.get('/sensor', function(req, res, next) {
+  console.log('get include sensor');
+  var serialNumber = req.query.serialNumber;
+
+  deviceModel.loadDeviceSensor(serialNumber, function(error, resultObject){
+  	res.json(resultObject);
+  });
+});
+
 
 
 /*
@@ -31,8 +46,8 @@ router.post('/', function(req, res, next) {
 
   console.log("Create include");
 
-  deviceModel.addInclude(deviceId, sensorId, function(error, includeObject){
-  	res.json(includeObject);
+  deviceModel.addInclude(deviceId, sensorId, function(error, resultObject){
+  	res.json(resultObject);
   });
 });
 
@@ -50,8 +65,8 @@ router.put('/', function(req, res, next) {
 
   console.log("Update device");
 
-  deviceModel.updateInclude(includeId, postDeviceId, postSensorId, function(error, includeObject){
-    res.json(includeObject);
+  deviceModel.updateInclude(includeId, postDeviceId, postSensorId, function(error, resultObject){
+    res.json(resultObject);
   });
 });
 
@@ -66,8 +81,8 @@ router.delete('/', function(req, res, next) {
 
 	console.log("Delete device");
 
-  deviceModel.removeInclude(includeId, function(error, includeObject){
-    res.json(includeObject);
+  deviceModel.removeInclude(includeId, function(error, resultObject){
+    res.json(resultObject);
   });
 });
 

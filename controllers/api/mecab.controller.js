@@ -1,13 +1,22 @@
 
 var request = require('request');
 
+var config = require('config.json')('./config/config.json');
+
+var redis = require("redis");
+var redisClient = redis.createClient(config.redis.port, config.redis.host);
+//redisClient.auth(config.redis.password);
+
+var recipeModel = require('../../models/api/recipe.model');
+
 // elasticsearch - mecab plugin
 exports.decodeData = function(command, callback){
   var resultObject = new Object({});
 
-  var url = "http://localhost:9200/seunjeon-idx/_analyze?analyzer=korean&pretty";
+  var url = config.elasticsearch.url + "/seunjeon-idx/_analyze?analyzer=korean&pretty";
 
-  console.log(command);
+  //console.log(url);
+  //console.log(command);
 
   request({
     url: url,
@@ -16,21 +25,42 @@ exports.decodeData = function(command, callback){
   }, function (error, response, html) {
     var parsingObject = new Object({});
 
+    //console.log(response);
+
     parsingObject = JSON.parse(response.body);
     var tokensObject = parsingObject.tokens;
-    console.log(tokensObject);
+    //console.log(tokensObject);
 
     decodeTokens(tokensObject, function(error, objectDecoded){
       var typeObject = objectDecoded;
       if(typeObject.sCheck || typeObject.dCheck){
         resultObject.recommand = true;
-        resultObject.typeObject = typeObject;
+        //resultObject.typeObject = typeObject;
 
+        var key = "";
+
+        if(typeObject.sCheck){
+          key = "recipe/smoothy/id";
+        }else{
+          key = "recipe/dish/id";
+        }
+
+        redisClient.smembers(key, function(error, idObject){
+          var recommandId = Math.floor(Math.random() * idObject.length);
+
+          recipeModel.loadRecipe(idObject[recommandId], function(error , recipeObject){
+            resultObject.recipe = recipeObject;
+
+            callback(null, resultObject);
+          });
+        });
       }else{
         resultObject.recommand = false;
+
+        callback(null, resultObject);
       }
 
-      callback(null, resultObject)
+
     });
 
 
