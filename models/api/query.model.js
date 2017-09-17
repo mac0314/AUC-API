@@ -11,6 +11,9 @@ var conn = mysql.createConnection({
   database : config.rds.aucdatabase
 });
 
+
+conn.connect();
+
 // Basic form CRUD
 // queryType : "insert", "select", "update", "delete"
 exports.request = function(queryType, modelLogName, sql, sqlParams, callback){
@@ -19,7 +22,6 @@ exports.request = function(queryType, modelLogName, sql, sqlParams, callback){
 
   var resultObject = new Object({});
 
-  conn.connect();
 
   conn.query(sql, sqlParams, function(error, responseObject){
     if(error){
@@ -33,7 +35,7 @@ exports.request = function(queryType, modelLogName, sql, sqlParams, callback){
       var errorTitle = errorPrefix + logSummary;
 
       errorModel.reportErrorLog(null, errorTitle, error.stack, function(error, result){
-        conn.end();
+
         callback(true, resultObject);
       });
     }else{
@@ -44,8 +46,6 @@ exports.request = function(queryType, modelLogName, sql, sqlParams, callback){
       }else if(queryType === "select"){
         resultObject.data = responseObject;
       }
-
-      conn.end();
 
       callback(null, resultObject);
     }

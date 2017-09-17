@@ -10,10 +10,10 @@ var authMiddleware = require('../../../middlewares/auth');
 
 	Read sensor.
 */
-router.get('/', function(req, res, next) {
+router.get('/:serialNumber?', function(req, res, next) {
   console.log('get sensor');
 
-  sensorModel.loadAllSensor(function(error, resultObject){
+  sensorModel.loadSensor(serialNumber, function(error, resultObject){
   	res.json(resultObject);
   });
 });

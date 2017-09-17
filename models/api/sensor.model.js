@@ -15,10 +15,16 @@ exports.addSensor = function(name, description, serialNumber, callback){
 };
 
 
-exports.loadAllSensor =  function(callback){
-  var sql = "SELECT * FROM sensor";
+exports.loadSensor = function(serialNumber, callback){
+  var sql = "SELECT sensor_id AS sensorId, name_sn AS name, description_ln AS description, serial_number_mn AS serialNumber FROM sensor";
 
   var sqlParams = [];
+
+  if(serialNumber !== null){
+    sql += " WHERE serial_number_mn = ?";
+
+    sqlParams.push(serialNumber);
+  }
 
   queryModel.request("select", modelLog, sql, sqlParams, function(error, resultObject){
     callback(error, resultObject);
